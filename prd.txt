@@ -1,0 +1,747 @@
+# Product Requirements Document (PRD)
+
+# PasteBin Pro
+
+**Version:** 1.0
+
+**Platform:** Web Application
+
+**Frontend:** React (Vite) + Tailwind CSS
+
+**Backend:** Node.js + Express.js
+
+**Database:** MongoDB
+
+**Cache & Real-Time:** Redis
+
+**Authentication:** JWT
+
+---
+
+# 1. Project Overview
+
+PasteBin Pro is a modern web application that allows users to securely create, manage, organize, and share text or code snippets. Unlike a traditional PasteBin clone, this application leverages Redis for temporary storage, automatic expiration, rate limiting, analytics, caching, and performance optimization.
+
+The application should be production-ready, responsive, and designed with a clean, modern UI.
+
+---
+
+# 2. Objectives
+
+* Allow users to create and manage code/text snippets.
+* Secure private content.
+* Share snippets via unique URLs.
+* Automatically expire content.
+* Track usage analytics.
+* Demonstrate real-world Redis implementation.
+* Maintain excellent performance.
+
+---
+
+# 3. Target Users
+
+* Developers
+* Students
+* QA Engineers
+* DevOps Engineers
+* Technical Interview Candidates
+* Teams sharing code snippets
+
+---
+
+# 4. User Roles
+
+## Guest
+
+Can
+
+* View public pastes
+* Create anonymous paste
+* Search public pastes
+* Report inappropriate paste
+
+Cannot
+
+* Edit after creation
+* View private pastes
+* Access dashboard
+
+---
+
+## Registered User
+
+Can
+
+* Create paste
+* Edit paste
+* Delete paste
+* Archive paste
+* Favorite paste
+* Password protect paste
+* Create private paste
+* View analytics
+* Manage profile
+
+---
+
+## Admin
+
+Can
+
+* Manage users
+* Remove inappropriate pastes
+* View analytics
+* Manage reports
+* Manage system announcements
+
+---
+
+# 5. Functional Requirements
+
+## Module 1 — Authentication
+
+### Features
+
+* User Registration
+* Login
+* Logout
+* Forgot Password
+* Reset Password
+* JWT Authentication
+* Refresh Token
+* Remember Me
+
+Validation
+
+* Email unique
+* Strong password
+* Email format
+
+---
+
+## Module 2 — User Profile
+
+Fields
+
+* Name
+* Email
+* Avatar
+* Bio
+* Joined Date
+
+Settings
+
+* Change Password
+* Default Visibility
+* Default Expiration
+* Theme (Light/Dark)
+
+---
+
+## Module 3 — Dashboard
+
+Display
+
+* Total Pastes
+* Public Pastes
+* Private Pastes
+* Drafts
+* Archived
+* Expired
+* Burned
+* Total Views
+* Most Viewed Paste
+* Recent Activity
+
+---
+
+## Module 4 — Create Paste
+
+Fields
+
+Title
+
+Description
+
+Content
+
+Programming Language
+
+Visibility
+
+* Public
+* Unlisted
+* Private
+
+Password Protection
+
+Expiration
+
+Options
+
+* Never
+* 10 Minutes
+* 1 Hour
+* 1 Day
+* 7 Days
+* 30 Days
+
+Burn After Reading
+
+* Disabled
+* After 1 View
+* After 5 Views
+* After 10 Views
+
+Tags
+
+Category
+
+Allow Comments (Future Ready)
+
+Buttons
+
+* Save Draft
+* Publish
+* Preview
+
+---
+
+## Module 5 — Paste Details
+
+Display
+
+* Title
+* Content
+* Author
+* Created Date
+* Updated Date
+* Views
+* Language
+* Expiration
+* Tags
+
+Actions
+
+Copy
+
+Download
+
+Duplicate
+
+Edit
+
+Delete
+
+Archive
+
+Favorite
+
+Share
+
+Generate QR Code
+
+---
+
+## Module 6 — My Pastes
+
+Tabs
+
+All
+
+Public
+
+Private
+
+Draft
+
+Archived
+
+Expired
+
+Favorites
+
+Filters
+
+Date
+
+Views
+
+Language
+
+Tags
+
+Search
+
+Sort
+
+Newest
+
+Oldest
+
+Most Viewed
+
+Alphabetical
+
+---
+
+## Module 7 — Search
+
+Search By
+
+Title
+
+Content
+
+Language
+
+Tags
+
+Category
+
+Author
+
+---
+
+## Module 8 — Downloads
+
+Download formats
+
+TXT
+
+Markdown
+
+JSON
+
+---
+
+## Module 9 — Favorites
+
+User can
+
+Add favorite
+
+Remove favorite
+
+View favorite list
+
+---
+
+## Module 10 — Archive
+
+Move paste to archive
+
+Restore archive
+
+Permanent delete
+
+---
+
+## Module 11 — Reports
+
+Guest/User
+
+Report inappropriate content
+
+Reason
+
+Spam
+
+Abuse
+
+Malware
+
+Copyright
+
+Other
+
+---
+
+## Module 12 — Admin Panel
+
+Dashboard
+
+User Management
+
+Paste Management
+
+Reports
+
+Statistics
+
+Announcements
+
+---
+
+# 6. Redis Requirements
+
+Redis is a core dependency.
+
+## Feature 1 — Expiring Pastes
+
+Store expiration metadata.
+
+Use TTL.
+
+Automatically expire temporary pastes.
+
+---
+
+## Feature 2 — View Counter
+
+Every visit increments Redis counter.
+
+Database updates periodically.
+
+---
+
+## Feature 3 — Popular Pastes
+
+Maintain Sorted Set.
+
+Rank by views.
+
+Display Trending.
+
+---
+
+## Feature 4 — Rate Limiting
+
+Limit
+
+Create Paste API
+
+Login API
+
+Search API
+
+Prevent spam.
+
+---
+
+## Feature 5 — Session Storage
+
+Store active JWT sessions.
+
+Support logout from all devices.
+
+---
+
+## Feature 6 — Cache
+
+Cache
+
+Popular Pastes
+
+Recent Public Pastes
+
+Paste Details
+
+Dashboard Statistics
+
+Search Results
+
+---
+
+## Feature 7 — Anonymous Paste Expiration
+
+Anonymous drafts automatically removed after configured TTL.
+
+---
+
+# 7. MongoDB Collections
+
+Users
+
+Pastes
+
+Favorites
+
+Reports
+
+Categories
+
+Tags
+
+ActivityLogs
+
+---
+
+# 8. Paste Model
+
+* id
+* title
+* description
+* content
+* language
+* visibility
+* passwordHash
+* category
+* tags
+* authorId
+* expiresAt
+* burnAfterViews
+* currentViews
+* totalViews
+* qrCodeUrl
+* status
+* isArchived
+* createdAt
+* updatedAt
+
+---
+
+# 9. User Model
+
+* id
+* name
+* email
+* password
+* avatar
+* bio
+* role
+* theme
+* defaultVisibility
+* defaultExpiration
+* createdAt
+
+---
+
+# 10. API Modules
+
+Authentication
+
+Users
+
+Pastes
+
+Search
+
+Dashboard
+
+Favorites
+
+Reports
+
+Admin
+
+Statistics
+
+Downloads
+
+---
+
+# 11. UI Pages
+
+Landing Page
+
+Login
+
+Register
+
+Forgot Password
+
+Dashboard
+
+Create Paste
+
+Edit Paste
+
+Paste Details
+
+Search Results
+
+My Pastes
+
+Favorites
+
+Archived
+
+Profile
+
+Settings
+
+Admin Dashboard
+
+404
+
+403
+
+---
+
+# 12. UI Theme
+
+Modern SaaS
+
+Rounded cards
+
+Glassmorphism (light usage)
+
+Minimal animations
+
+Responsive
+
+Desktop-first with mobile support
+
+Dark Mode
+
+Light Mode
+
+---
+
+# 13. Navigation
+
+Home
+
+Create
+
+My Pastes
+
+Favorites
+
+Search
+
+Profile
+
+Settings
+
+Logout
+
+---
+
+# 14. Non-Functional Requirements
+
+Fast page load
+
+Redis response under 20ms (local)
+
+REST API
+
+Secure authentication
+
+Responsive design
+
+Scalable architecture
+
+Modular codebase
+
+Reusable components
+
+Clean folder structure
+
+Environment-based configuration
+
+Docker support
+
+---
+
+# 15. Security
+
+JWT Authentication
+
+Password hashing (bcrypt)
+
+Helmet
+
+CORS
+
+Rate limiting
+
+Input validation
+
+MongoDB injection protection
+
+XSS protection
+
+CSRF consideration for state-changing endpoints
+
+Secure HTTP headers
+
+---
+
+# 16. Folder Structure
+
+```
+pastebin-pro/
+│
+├── client/
+│   ├── src/
+│   │   ├── api/
+│   │   ├── assets/
+│   │   ├── components/
+│   │   ├── layouts/
+│   │   ├── pages/
+│   │   ├── hooks/
+│   │   ├── contexts/
+│   │   ├── routes/
+│   │   ├── utils/
+│   │   └── App.jsx
+│   └── public/
+│
+├── server/
+│   ├── config/
+│   ├── controllers/
+│   ├── middleware/
+│   ├── models/
+│   ├── routes/
+│   ├── services/
+│   ├── redis/
+│   ├── validations/
+│   ├── jobs/
+│   ├── utils/
+│   └── server.js
+│
+├── docker-compose.yml
+├── .env.example
+└── README.md
+```
+
+---
+
+# 17. Future Enhancements (Out of Scope for V1)
+
+* Team workspaces
+* Comments
+* Version history
+* REST API keys
+* Webhooks
+* OAuth login (Google/GitHub)
+* Collections
+* Notifications
+* Browser extension
+* Desktop application
+
+---
+
+# 18. Success Criteria
+
+* Users can create, edit, delete, archive, and share pastes.
+* Anonymous and registered workflows function correctly.
+* Expiring pastes are removed automatically via Redis TTL.
+* View counts and trending lists update correctly using Redis.
+* Rate limiting protects public APIs.
+* Dashboard metrics load quickly using Redis caching.
+* Responsive UI works on desktop, tablet, and mobile.
+* The application is containerized and easy to deploy.
+
+---
+
+# MVP Scope
+
+The first release must include:
+
+* User authentication
+* Anonymous paste creation
+* Registered user dashboard
+* Public, private, and unlisted pastes
+* Password-protected pastes
+* Paste expiration with Redis TTL
+* Burn-after-reading support
+* Search and filtering
+* Favorites and archive
+* View analytics
+* QR code generation
+* Admin panel
+* Redis-based caching, counters, sessions, trending, and rate limiting
+* Responsive React frontend
+* RESTful Node.js backend

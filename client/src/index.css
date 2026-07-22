@@ -1,0 +1,79 @@
+@import "tailwindcss";
+
+@theme {
+  --color-surface: #0b1326;
+  --color-surface-dim: #0b1326;
+  --color-surface-bright: #31394d;
+  --color-surface-container-lowest: #060e20;
+  --color-surface-container-low: #131b2e;
+  --color-surface-container: #171f33;
+  --color-surface-container-high: #222a3d;
+  --color-surface-container-highest: #2d3449;
+  --color-on-surface: #dae2fd;
+  --color-on-surface-variant: #c1c6d7;
+  --color-outline: #8b90a0;
+  --color-outline-variant: #414755;
+  --color-primary: #adc6ff;
+  --color-on-primary: #002e69;
+  --color-primary-container: #4b8eff;
+  --color-on-primary-container: #00285c;
+  --color-secondary: #4edea3;
+  --color-on-secondary: #003824;
+  --color-tertiary: #ffb787;
+  --color-on-tertiary: #4e2600;
+  --color-error: #ffb4ab;
+  --color-on-error: #690005;
+  --color-background: #0b1326;
+  --color-on-background: #dae2fd;
+
+  --font-inter: "Inter", sans-serif;
+  --font-geist: "Geist", monospace;
+  
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+}
+
+@layer base {
+  body {
+    @apply bg-background text-on-background font-inter antialiased;
+  }
+}
+
+@layer components {
+  /* Reusable button styles */
+  .btn {
+    @apply inline-flex items-center justify-center rounded-md px-4 py-2 font-medium transition-all duration-150 focus:outline-none;
+  }
+  
+  .btn-primary {
+    @apply bg-primary-container text-white border border-transparent hover:opacity-90;
+  }
+  
+  .btn-secondary {
+    @apply bg-transparent border border-outline text-on-surface hover:bg-surface-container;
+  }
+
+  /* Glassmorphism Cards */
+  .glass-card {
+    @apply bg-surface-container/80 backdrop-blur-md border border-outline-variant rounded-lg shadow-[0_10px_25px_-5px_rgba(0,0,0,0.4)];
+  }
+
+  .glass-panel {
+    @apply bg-surface-container-high/70 backdrop-blur-md border border-outline-variant/50;
+  }
+
+  .glow-primary {
+    box-shadow: 0 0 20px rgba(173, 198, 255, 0.15);
+  }
+
+  .code-syntax-keyword { @apply text-secondary; }
+  .code-syntax-string { @apply text-tertiary; }
+  .code-syntax-comment { @apply text-outline; }
+
+  /* Input fields */
+  .input-field {
+    @apply w-full bg-surface border border-outline text-on-surface py-2 px-3 rounded-md focus:outline-none focus:border-primary focus:shadow-[0_0_0_2px_rgba(173,198,255,0.2)] transition-all;
+  }
+}

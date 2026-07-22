@@ -1,0 +1,33 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Env & secrets
+.env
+**/.env
+*.local
+
+# Build output
+dist/
+dist-ssr/
+build/
+**/dist/
+
+# Prisma generated
+**/generated/prisma
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Editor / OS
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+Thumbs.db
+
+# Claude / agent scratch
+.claude/
+scratchpad/

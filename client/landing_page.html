@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>PasteBin Pro | Secure Snippets, Redis-Fast Performance</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=Geist:wght@400;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "error-container": "#93000a",
+                        "on-tertiary-fixed": "#351000",
+                        "on-tertiary-container": "#4c1a00",
+                        "primary-container": "#4b8eff",
+                        "surface-dim": "#0b1326",
+                        "on-secondary-fixed-variant": "#005236",
+                        "primary-fixed": "#d8e2ff",
+                        "surface-container-high": "#222a3d",
+                        "outline": "#8b90a0",
+                        "surface-container": "#171f33",
+                        "secondary-container": "#00a572",
+                        "on-surface-variant": "#c1c6d7",
+                        "outline-variant": "#414755",
+                        "on-tertiary-fixed-variant": "#7c2e00",
+                        "on-primary": "#002e69",
+                        "inverse-on-surface": "#283044",
+                        "on-secondary": "#003824",
+                        "tertiary": "#ffb595",
+                        "secondary-fixed": "#6ffbbe",
+                        "tertiary-container": "#ef6719",
+                        "secondary-fixed-dim": "#4edea3",
+                        "surface-container-lowest": "#060e20",
+                        "on-tertiary": "#571e00",
+                        "on-secondary-fixed": "#002113",
+                        "tertiary-fixed-dim": "#ffb595",
+                        "on-primary-fixed": "#001a41",
+                        "surface-container-low": "#131b2e",
+                        "secondary": "#4edea3",
+                        "primary-fixed-dim": "#adc6ff",
+                        "tertiary-fixed": "#ffdbcc",
+                        "inverse-primary": "#005bc1",
+                        "on-error-container": "#ffdad6",
+                        "on-surface": "#dae2fd",
+                        "on-primary-container": "#00285c",
+                        "surface-variant": "#2d3449",
+                        "surface": "#0b1326",
+                        "inverse-surface": "#dae2fd",
+                        "on-primary-fixed-variant": "#004493",
+                        "surface-container-highest": "#2d3449",
+                        "on-error": "#690005",
+                        "surface-bright": "#31394d",
+                        "on-background": "#dae2fd",
+                        "surface-tint": "#adc6ff",
+                        "primary": "#adc6ff",
+                        "background": "#0b1326",
+                        "on-secondary-container": "#00311f",
+                        "error": "#ffb4ab"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "md": "16px",
+                        "xs": "4px",
+                        "sidebar-expanded": "240px",
+                        "sidebar-collapsed": "64px",
+                        "lg": "24px",
+                        "sm": "8px",
+                        "xl": "32px",
+                        "container-max": "1440px",
+                        "base": "8px"
+                    },
+                    "fontFamily": {
+                        "label-caps": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "title-sm": ["Inter"],
+                        "display-lg-mobile": ["Inter"],
+                        "mono-data": ["Geist"],
+                        "display-lg": ["Inter"],
+                        "body-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-caps": ["11px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "title-sm": ["18px", { "lineHeight": "24px", "fontWeight": "600" }],
+                        "display-lg-mobile": ["28px", { "lineHeight": "34px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "mono-data": ["13px", { "lineHeight": "20px", "fontWeight": "450" }],
+                        "display-lg": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-sm": ["13px", { "lineHeight": "18px", "fontWeight": "400" }]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0b1326;
+            color: #dae2fd;
+        }
+
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(71, 85, 105, 0.5);
+        }
+
+        .glow-primary {
+            box-shadow: 0 0 20px rgba(173, 198, 255, 0.15);
+        }
+
+        .code-syntax-keyword {
+            color: #4edea3;
+        }
+
+        .code-syntax-string {
+            color: #ffb595;
+        }
+
+        .code-syntax-comment {
+            color: #8b90a0;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #171f33;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #414755;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #adc6ff;
+        }
+    </style>
+</head>
+
+<body class="font-body-md text-body-md overflow-x-hidden">
+    <!-- TopNavBar -->
+    <header class="w-full top-0 sticky z-50 border-b border-outline-variant bg-surface/80 backdrop-blur-md shadow-sm">
+        <nav class="flex justify-between items-center px-lg h-16 w-full max-w-container-max mx-auto">
+            <div class="flex items-center gap-xl">
+                <span class="font-display-lg text-display-lg text-primary tracking-tighter">PasteBin Pro</span>
+                <div class="hidden md:flex gap-md">
+                    <a class="text-primary font-bold border-b-2 border-primary pb-1" href="#"></a>
+                    <a class="text-on-surface-variant hover:text-on-surface transition-colors" href="#"></a>
+                    <a class="text-on-surface-variant hover:text-on-surface transition-colors" href="#"></a>
+                </div>
+            </div>
+            <div class="flex items-center gap-md">
+                <div class="hidden md:flex relative group">
+                    <span
+                        class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm">search</span>
+                    <input
+                        class="bg-surface-container border border-outline-variant rounded-lg pl-10 pr-4 py-1.5 text-body-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all w-64"
+                        placeholder="Search snippets..." type="text" />
+                </div>
+                <div class="flex items-center gap-sm">
+                    <button
+                        class="material-symbols-outlined text-on-surface-variant hover:bg-surface-variant/50 p-2 rounded-lg transition-all active:scale-95">notifications</button>
+                    <button
+                        class="material-symbols-outlined text-on-surface-variant hover:bg-surface-variant/50 p-2 rounded-lg transition-all active:scale-95">settings</button>
+                    <button
+                        class="bg-primary text-on-primary px-md py-2 rounded-lg font-bold hover:bg-primary-container transition-all active:scale-95">New
+                        Paste</button>
+                    <div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant ml-sm">
+                        <img class="w-full h-full object-cover"
+                            data-alt="A professional high-fidelity 3D profile avatar of a software developer, clean lines, cinematic lighting against a dark blue background, matching the corporate modern aesthetic of a tech startup."
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBhAtL6okTEJJ2LqRqkHuVm0JV96cl9kjibfv8Z-MwMTpoeDlkoXJOhMTcc97811Tk7sfnEeF9BxblEvgPBwqmiVzlJl6sAXiueHnK8yC0WPVF_cp05qH9DbQuTbu302SCeWOyaplwNbHXyUk2RXetrFjlMDOdgORQmUWhQ-9fwkW0039Xv8Enjn7fmsnHZKsM2YMA4gph0GZwMy8yccS_Hn64ZCddZ1-i6j5JWCyArZDIH1j55GMlO" />
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main class="relative">
+        <!-- Hero Section -->
+        <section class="relative pt-24 pb-32 overflow-hidden">
+            <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] pointer-events-none opacity-20">
+
+            </div>
+            <div class="max-w-container-max mx-auto px-lg flex flex-col lg:flex-row items-center gap-xl relative z-10">
+                <div class="flex-1 text-center lg:text-left">
+                    <h1 class="font-display-lg text-display-lg md:text-6xl text-on-surface mb-md leading-tight">
+                        Secure Snippets, <br />
+                        <span class="text-primary">Redis-Fast Performance.</span>
+                    </h1>
+                    <p class="text-on-surface-variant text-lg max-w-2xl mb-xl">
+                        Streamline your workflow with the fastest pasting service for developers. Built on Redis for
+                        sub-millisecond persistence, secured with AES-256 encryption, and designed for maximum density.
+                    </p>
+                    <div class="flex flex-wrap gap-md justify-center lg:justify-start">
+                        <button
+                            class="bg-primary text-on-primary px-xl py-4 rounded-xl font-bold text-lg hover:bg-primary-container transition-all shadow-lg glow-primary active:scale-95 flex items-center gap-2">
+                            <span class="material-symbols-outlined">bolt</span>
+                            Get Started Free
+                        </button>
+                        <button
+                            class="bg-surface-variant/30 border border-outline-variant text-on-surface px-xl py-4 rounded-xl font-bold text-lg hover:bg-surface-variant/50 transition-all active:scale-95 flex items-center gap-2">
+                            <span class="material-symbols-outlined">api</span>
+                            API Documentation
+                        </button>
+                    </div>
+                </div>
+                <!-- Create Anonymous Paste Editor Area -->
+                <div class="flex-1 w-full max-w-2xl">
+                    <div class="glass-panel rounded-xl overflow-hidden shadow-2xl">
+                        <div
+                            class="bg-surface-container-high px-md py-sm flex justify-between items-center border-b border-outline-variant">
+                            <div class="flex gap-2">
+                                <div class="w-3 h-3 rounded-full bg-error"></div>
+                                <div class="w-3 h-3 rounded-full bg-tertiary"></div>
+                                <div class="w-3 h-3 rounded-full bg-secondary"></div>
+                            </div>
+                            <div class="flex items-center gap-md">
+                                <span
+                                    class="font-mono-data text-label-caps text-on-surface-variant bg-surface-container-low px-2 py-0.5 rounded">anonymous.js</span>
+                                <span class="material-symbols-outlined text-on-surface-variant text-sm">more_vert</span>
+                            </div>
+                        </div>
+                        <div
+                            class="p-md bg-surface-container-lowest h-64 font-mono-data text-body-md overflow-hidden relative">
+                            <div class="flex gap-md h-full">
+                                <div
+                                    class="text-outline-variant select-none border-r border-outline-variant pr-md flex flex-col">
+                                    <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span>
+                                </div>
+                                <div class="flex-1">
+                                    <span class="code-syntax-keyword">const</span> <span
+                                        class="text-primary">paste</span> = <span
+                                        class="code-syntax-keyword">async</span> () =&gt; {<br />
+                                      <span class="code-syntax-keyword">const</span> data = <span
+                                        class="code-syntax-keyword">await</span> redis.<span
+                                        class="text-primary">set</span>(<span
+                                        class="code-syntax-string">'id'</span>);<br />
+                                      <span class="code-syntax-comment">// Secure TTL enabled</span><br />
+                                      <span class="code-syntax-keyword">return</span> <span class="text-secondary">"Fast
+                                        &amp; Secure"</span>;<br />
+                                    };
+                                    <div class="absolute inset-x-md bottom-4 flex items-center gap-sm">
+                                        <input
+                                            class="bg-transparent border-none outline-none text-on-surface w-full focus:ring-0"
+                                            placeholder="Paste your code here..." type="text" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            class="bg-surface-container p-md border-t border-outline-variant flex flex-wrap justify-between items-center gap-md">
+                            <div class="flex gap-sm">
+                                <select
+                                    class="bg-surface-container-low border border-outline-variant text-on-surface-variant text-label-caps px-2 py-1 rounded">
+                                    <option>JavaScript</option>
+                                    <option>Python</option>
+                                    <option>Go</option>
+                                </select>
+                                <select
+                                    class="bg-surface-container-low border border-outline-variant text-on-surface-variant text-label-caps px-2 py-1 rounded">
+                                    <option>Expires: 24h</option>
+                                    <option>Burn on read</option>
+                                    <option>Forever</option>
+                                </select>
+                            </div>
+                            <button
+                                class="bg-secondary text-on-secondary px-lg py-2 rounded-lg font-bold text-label-caps hover:bg-secondary-container transition-all active:scale-95">CREATE
+                                PASTE</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Trending Pastes (Bento Grid) -->
+        <section class="py-xl max-w-container-max mx-auto px-lg">
+            <div class="flex justify-between items-end mb-xl">
+                <div>
+                    <h2 class="font-headline-md text-headline-md text-on-surface">Trending Snippets</h2>
+                    <p class="text-on-surface-variant text-body-sm">The most viewed public snippets in the last hour.
+                    </p>
+                </div>
+                <button class="text-primary font-label-caps flex items-center gap-1 hover:underline">
+                    EXPLORE ALL <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                </button>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-md">
+                <!-- Snippet Card 1 -->
+                <div class="glass-panel p-md rounded-xl hover:border-primary transition-colors cursor-pointer group">
+                    <div class="flex justify-between items-start mb-md">
+                        <div class="flex gap-2">
+                            <span
+                                class="bg-primary/10 text-primary px-2 py-0.5 rounded text-label-caps">JAVASCRIPT</span>
+                            <span
+                                class="bg-surface-variant text-on-surface-variant px-2 py-0.5 rounded text-label-caps flex items-center gap-1">
+                                <span class="material-symbols-outlined text-[12px]">visibility</span> 12.4k
+                            </span>
+                        </div>
+                        <span
+                            class="material-symbols-outlined text-on-surface-variant group-hover:text-primary">open_in_new</span>
+                    </div>
+                    <h3 class="font-title-sm text-title-sm text-on-surface mb-sm">OAuth2 Implementation Pattern</h3>
+                    <p
+                        class="text-on-surface-variant text-body-sm line-clamp-3 font-mono-data bg-surface-container-lowest p-sm rounded border border-outline-variant/30 mb-md">
+                        export const authorize = (req, res) =&gt; {
+                        const client = getClient(req.body.id);
+                        // ... validate scopes
+                        };
+                    </p>
+                    <div class="flex items-center gap-2 text-on-surface-variant text-body-sm">
+                        <div class="w-5 h-5 rounded-full overflow-hidden">
+                            <img class="w-full h-full object-cover"
+                                data-alt="A small detailed user avatar of a tech-savvy engineer, professional photography style, dark background with subtle blue rim lighting."
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBWetEtiac3pZymTccDVN1gDtIBfIbS-qk0U2EHf5lJXlGTSC3LiyfJSObS5P_vHSxevfFWWltwoBV_6Tk70sjnQmK5fWxmYVg_T9K5eKVteuBaBAVoxZ0ZiF2S5DORUOXuD-inOOs2GtvOuohuyVQ1wgC-qM9gNJ1WXdciZ4xOgT4Yti8wA5IjqkJnJRjpFqlpku4tPgb3t2Vt_3j2CHqF_gEh3iNWh0zMeWG9283K8qzXstxTOomk" />
+                        </div>
+                        <span>dev_master_99</span>
+                        <span class="ml-auto text-label-caps">2 hours ago</span>
+                    </div>
+                </div>
+                <!-- Snippet Card 2 -->
+                <div class="glass-panel p-md rounded-xl hover:border-primary transition-colors cursor-pointer group">
+                    <div class="flex justify-between items-start mb-md">
+                        <div class="flex gap-2">
+                            <span
+                                class="bg-tertiary-container/20 text-tertiary px-2 py-0.5 rounded text-label-caps">PYTHON</span>
+                            <span
+                                class="bg-surface-variant text-on-surface-variant px-2 py-0.5 rounded text-label-caps flex items-center gap-1">
+                                <span class="material-symbols-outlined text-[12px]">visibility</span> 8.9k
+                            </span>
+                        </div>
+                        <span
+                            class="material-symbols-outlined text-on-surface-variant group-hover:text-primary">open_in_new</span>
+                    </div>
+                    <h3 class="font-title-sm text-title-sm text-on-surface mb-sm">FastAPI Middleware Boilerplate</h3>
+                    <p
+                        class="text-on-surface-variant text-body-sm line-clamp-3 font-mono-data bg-surface-container-lowest p-sm rounded border border-outline-variant/30 mb-md">
+                        @app.middleware("http")
+                        async def add_process_time_header(request: Request, call_next):
+                        start_time = time.time()
+                    </p>
+                    <div class="flex items-center gap-2 text-on-surface-variant text-body-sm">
+                        <div class="w-5 h-5 rounded-full overflow-hidden">
+                            <img class="w-full h-full object-cover"
+                                data-alt="Close up of a female software developer profile photo, modern tech style, neutral lighting, minimalist dark blue atmosphere."
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuCbvXxI8hvnnr9RjQTMZ0qUDnKkcsFZLiaPfhQ3I6Yx0RKJoVzzUYYB3iyQER2u2hP7Kz81QoE7VI90iPj5IIOW38vfOAMiRn171aVaNMmVsF9J0YyN9IOh4fiMO-FFYqHCRjVxI7bDPpK-lK2td4JWwdFdZn1f8AHY3xn8nAS__c8LwRQNJCdJu7jXpCNz5Bf4sskwggfjvwodSbJxGb3yyPyKonQUkFud5vH_nTuuRkp55EKpL0wO" />
+                        </div>
+                        <span>cloud_architect</span>
+                        <span class="ml-auto text-label-caps">4 hours ago</span>
+                    </div>
+                </div>
+                <!-- Snippet Card 3 -->
+                <div class="glass-panel p-md rounded-xl hover:border-primary transition-colors cursor-pointer group">
+                    <div class="flex justify-between items-start mb-md">
+                        <div class="flex gap-2">
+                            <span
+                                class="bg-secondary-container/20 text-secondary px-2 py-0.5 rounded text-label-caps">GO</span>
+                            <span
+                                class="bg-surface-variant text-on-surface-variant px-2 py-0.5 rounded text-label-caps flex items-center gap-1">
+                                <span class="material-symbols-outlined text-[12px]">visibility</span> 5.1k
+                            </span>
+                        </div>
+                        <span
+                            class="material-symbols-outlined text-on-surface-variant group-hover:text-primary">open_in_new</span>
+                    </div>
+                    <h3 class="font-title-sm text-title-sm text-on-surface mb-sm">Concurrency Worker Pool</h3>
+                    <p
+                        class="text-on-surface-variant text-body-sm line-clamp-3 font-mono-data bg-surface-container-lowest p-sm rounded border border-outline-variant/30 mb-md">
+                        func worker(id int, jobs &lt;-chan int, results chan&lt;- int) {
+                        for j := range jobs {
+                        results &lt;- j * 2
+                        }
+                        }
+                    </p>
+                    <div class="flex items-center gap-2 text-on-surface-variant text-body-sm">
+                        <div class="w-5 h-5 rounded-full overflow-hidden">
+                            <img class="w-full h-full object-cover"
+                                data-alt="A sleek minimalist avatar icon for a computer system or bot, high-tech glowing blue circuits on dark grey metal background."
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAISXpAcFjVMCGHb95gImF1B2yOHZsCW8wlz7uXmXqy7PamB9bvKgMrnDXZd5iw8730MiMS07PqiLQ0DyV2f2SLOwUfLdhj1E069xyIIPtc1VRmsgzOdClF2eMd-eLuJDnwe46kSSW1ctA9ZpxusT0-0UAh3HKpier0peuOzao_LtzUFosem2Vv_PiOVvFKDucfouoJKCUcTRIAlpOQ6doh3B7SoEYcT3EzfB3nLjAKMTEDQpEcZxc_" />
+                        </div>
+                        <span>system_core</span>
+                        <span class="ml-auto text-label-caps">15 mins ago</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Features Section -->
+        <section class="py-xl bg-surface-container-low/50 relative">
+            <div class="max-w-container-max mx-auto px-lg">
+                <div class="text-center mb-xl">
+                    <h2 class="font-headline-md text-headline-md text-on-surface">Pro Features for Power Users</h2>
+                    <p class="text-on-surface-variant mt-sm">Built for reliability, security, and extreme speed.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-xl">
+                    <!-- Feature 1 -->
+                    <div class="flex flex-col items-center text-center p-lg">
+                        <div
+                            class="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-lg border border-primary/20">
+                            <span class="material-symbols-outlined text-primary text-4xl">bolt</span>
+                        </div>
+                        <h3 class="font-title-sm text-title-sm text-on-surface mb-sm">Redis-Backed Persistence</h3>
+                        <p class="text-on-surface-variant text-body-sm">Experience sub-millisecond response times with
+                            our globally distributed Redis clusters. Your data is always ready when you are.</p>
+                    </div>
+                    <!-- Feature 2 -->
+                    <div class="flex flex-col items-center text-center p-lg">
+                        <div
+                            class="w-16 h-16 rounded-2xl bg-secondary/10 flex items-center justify-center mb-lg border border-secondary/20">
+                            <span class="material-symbols-outlined text-secondary text-4xl">lock</span>
+                        </div>
+                        <h3 class="font-title-sm text-title-sm text-on-surface mb-sm">AES-256 Encryption</h3>
+                        <p class="text-on-surface-variant text-body-sm">Client-side encryption ensures that your
+                            sensitive snippets never leave your browser without being protected by industry-standard
+                            protocols.</p>
+                    </div>
+                    <!-- Feature 3 -->
+                    <div class="flex flex-col items-center text-center p-lg">
+                        <div
+                            class="w-16 h-16 rounded-2xl bg-tertiary-container/10 flex items-center justify-center mb-lg border border-tertiary-container/20">
+                            <span class="material-symbols-outlined text-tertiary text-4xl">local_fire_department</span>
+                        </div>
+                        <h3 class="font-title-sm text-title-sm text-on-surface mb-sm">Burn After Reading</h3>
+                        <p class="text-on-surface-variant text-body-sm">Self-destructing pastes offer the ultimate
+                            privacy. Set a view count or a TTL, and the snippet is purged from our memory-tier
+                            permanently.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Metrics Sparkline CTA -->
+        <section class="max-w-container-max mx-auto px-lg py-32">
+            <div
+                class="glass-panel p-xl rounded-2xl relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-xl">
+                <div class="absolute inset-0 opacity-10 pointer-events-none">
+
+                </div>
+                <div class="relative z-10 flex-1">
+                    <div class="flex items-center gap-md mb-md">
+                        <span
+                            class="bg-secondary/20 text-secondary px-3 py-1 rounded-full text-label-caps font-bold">LIVE
+                            METRICS</span>
+                        <span class="flex items-center gap-1 text-on-surface-variant text-body-sm">
+                            <span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span> 4,512 Active
+                            Connections
+                        </span>
+                    </div>
+                    <h2 class="font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface mb-md">Ready to
+                        scale your snippets?</h2>
+                    <p class="text-on-surface-variant text-lg">Join 50,000+ developers using PasteBin Pro for internal
+                        documentation and rapid debugging.</p>
+                </div>
+                <div class="relative z-10 flex flex-col gap-md">
+                    <button
+                        class="bg-primary text-on-primary px-xl py-4 rounded-xl font-bold text-lg hover:bg-primary-container transition-all active:scale-95 text-center">Start
+                        for Free</button>
+                    <button
+                        class="text-on-surface border border-outline-variant px-xl py-4 rounded-xl font-bold text-lg hover:bg-surface-variant/30 transition-all text-center">Contact
+                        Enterprise</button>
+                </div>
+            </div>
+        </section>
+    </main>
+    <!-- Footer -->
+    <footer
+        class="w-full py-xl border-t border-outline-variant bg-surface-container-lowest dark:bg-surface-container-lowest">
+        <div class="flex flex-col md:flex-row justify-between items-center px-lg max-w-container-max mx-auto gap-md">
+            <div class="flex flex-col gap-xs items-center md:items-start">
+                <span class="font-title-sm text-title-sm text-on-surface">PasteBin Pro</span>
+                <p class="font-body-sm text-body-sm text-on-surface-variant">© 2024 PasteBin Pro Inc. Built for
+                    developers.</p>
+            </div>
+            <div class="flex gap-lg flex-wrap justify-center">
+                <a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors underline underline-offset-4"
+                    href="#">API Docs</a>
+                <a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors underline underline-offset-4"
+                    href="#">Privacy</a>
+                <a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors underline underline-offset-4"
+                    href="#">Terms</a>
+                <a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors underline underline-offset-4"
+                    href="#">Security</a>
+                <a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors underline underline-offset-4"
+                    href="#">Status</a>
+            </div>
+            <div class="flex gap-md">
+                <a class="text-on-surface-variant hover:text-primary transition-colors material-symbols-outlined"
+                    href="#">alternate_email</a>
+                <a class="text-on-surface-variant hover:text-primary transition-colors material-symbols-outlined"
+                    href="#">rss_feed</a>
+            </div>
+        </div>
+    </footer>
+    <script>
+        // Micro-interaction for snippet hover effects
+        document.querySelectorAll('.glass-panel').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+    </script>
+</body>
+
+</html>

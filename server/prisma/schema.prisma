@@ -1,0 +1,124 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id                   String     @id @default(uuid())
+  name                 String
+  email                String     @unique
+  passwordHash         String
+  avatar               String?
+  bio                  String?
+  role                 Role       @default(USER)
+  theme                String     @default("DARK")
+  defaultVisibility    Visibility @default(PUBLIC)
+  defaultExpiration    String     @default("NEVER")
+  passwordResetToken   String?
+  passwordResetExpires DateTime?
+  createdAt            DateTime   @default(now())
+  updatedAt            DateTime   @default(now()) @updatedAt
+  pastes               Paste[]
+  favorites            Favorite[]
+  reports              Report[]
+  activityLogs         ActivityLog[]
+}
+
+model Paste {
+  id             String     @id @default(uuid())
+  title          String
+  description    String?
+  content        String
+  language       String     @default("plaintext")
+  visibility     Visibility @default(PUBLIC)
+  passwordHash   String?
+  category       String?
+  tags           String[]
+  authorId       String?
+  author         User?      @relation(fields: [authorId], references: [id])
+  expiresAt      DateTime?
+  burnAfterViews Int?
+  currentViews   Int        @default(0)
+  totalViews     Int        @default(0)
+  qrCodeUrl      String?
+  status         Status     @default(ACTIVE)
+  isArchived     Boolean    @default(false)
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @default(now()) @updatedAt
+  favorites      Favorite[]
+  reports        Report[]
+}
+
+model Favorite {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  pasteId   String
+  paste     Paste    @relation(fields: [pasteId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, pasteId])
+}
+
+model Report {
+  id         String       @id @default(uuid())
+  pasteId    String
+  paste      Paste        @relation(fields: [pasteId], references: [id], onDelete: Cascade)
+  reporterId String?
+  reporter   User?        @relation(fields: [reporterId], references: [id])
+  reason     ReportReason @default(OTHER)
+  details    String?
+  status     ReportStatus @default(OPEN)
+  createdAt  DateTime     @default(now())
+}
+
+model Announcement {
+  id        String   @id @default(uuid())
+  title     String
+  message   String
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+}
+
+model ActivityLog {
+  id        String   @id @default(uuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id])
+  action    String
+  meta      String?
+  createdAt DateTime @default(now())
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum Visibility {
+  PUBLIC
+  UNLISTED
+  PRIVATE
+}
+
+enum Status {
+  ACTIVE
+  DRAFT
+  EXPIRED
+  BURNED
+}
+
+enum ReportReason {
+  SPAM
+  ABUSE
+  MALWARE
+  COPYRIGHT
+  OTHER
+}
+
+enum ReportStatus {
+  OPEN
+  RESOLVED
+}
